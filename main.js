@@ -1,4 +1,26 @@
-window.onload = function() {
+ /*   DOMContentLoaded – the browser fully loaded HTML, and the DOM tree is built, but external resources like pictures <img> and stylesheets may be not yet loaded.
+        load – the browser loaded all resources (images, styles etc).
+    beforeunload/unload – when the user is leaving the page.*/
+
+/*
+En JQuery :
+$(document).ready(function(){
+    //your code here;
+})
+*/
+/*
+window.onload() = function(){}
+*/
+/*
+ *****   Nos aseguramos que el DOM se carge primero sin importar las imagenes u otros recursos,
+otra opcion es load tiene q cargar toda la pagina con sus elementos ****
+
+window.addEventListener('DOMContentLoaded', function(){}
+*/
+
+
+window.addEventListener('DOMContentLoaded', function(){
+
     //variables
     var form = document.getElementById("form");
     var input = document.getElementById("input");
@@ -19,25 +41,25 @@ window.onload = function() {
     //event listener for clear list
     btnClr.addEventListener("click", clearList);
 
-    if(localStorage.length <= 0) {
+    if (localStorage.length <= 0) {
         btnClr.style.display = "none"; //hide clear btn
         console.log("button");
     }
 
     //checking localstorage has data
-    if(localStorage.length > 0) {
+    if (localStorage.length > 0) {
         displayList();
     }
 
 
     //add todo item to list
     function addTodoItem() {
-        if(input.value === "") {
+        if (input.value === "") {
             alert("You must enter some value!");
         }
         else {
-            if(list.style.borderTop === "") {
-                console.log("here!")
+            if (list.style.borderTop === "") {
+                console.log("here!");
                 list.style.borderTop = "2px solid white";
                 btnClr.style.display = "inline";
             }
@@ -55,17 +77,17 @@ window.onload = function() {
     //adding string through style to list itme
     function boxChecked(event) {
         const element = event.target;
-        if(element.type === "checkbox") {
+        if (element.type === "checkbox") {
             element.parentNode.style.textDecoration = "line-through";
             todoList = JSON.parse(localStorage.getItem("todoList"));
-            todoList[element.id.split('-')[1]-1].checked = element.checked.toString();
+            todoList[element.id.split('-')[1] - 1].checked = element.checked.toString();
             localStorage.setItem("todoList", JSON.stringify(todoList));
         }
     }
 
     //adding data to local storage
     function addToLocalStorage() {
-        if(typeof(Storage) !== "undefined") {
+        if (typeof(Storage) !== "undefined") {
             localStorage.setItem("todoList", JSON.stringify(todoList));
         }
         else {
@@ -77,14 +99,14 @@ window.onload = function() {
     function displayList() {
         list.style.borderTop = "2px solid white";
         todoList = JSON.parse(localStorage.getItem("todoList"));
-        todoList.forEach(function(element) {
+        todoList.forEach(function (element) {
             console.log(element.item)
             var text = element.item;
             var item = `<li id="li-${id}">${text}<input id="box-${id}" class="checkboxes" type="checkbox"></li>`;
             list.insertAdjacentHTML("beforeend", item);
             //if we got a checked box, then style
-            if(element.checked) {
-                var li = document.getElementById("li-"+id);
+            if (element.checked) {
+                var li = document.getElementById("li-" + id);
                 li.style.textDecoration = "line-through";
                 li.childNodes[1].checked = element.checked;
             }
@@ -100,4 +122,6 @@ window.onload = function() {
         btnClr.style.display = "none";
         list.style.borderTop = "";
     }
-}
+
+});
+
